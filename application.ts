@@ -257,8 +257,8 @@ export class Application<AS extends State = Record<string, any>>
       error instanceof Deno.errors.NotFound
         ? 404
         : error.status && typeof error.status === "number"
-        ? error.status
-        : 500;
+          ? error.status
+          : 500;
     context.response.body = error.expose
       ? error.message
       : STATUS_TEXT.get(status);
@@ -382,7 +382,7 @@ export class Application<AS extends State = Record<string, any>>
    * `std/http/server`. */
   handle = (async (
     request: ServerRequest | Request,
-    secureOrConn: Deno.Conn | boolean | undefined,
+    secureOrConn: Deno.Conn | undefined,
     secure = false,
   ): Promise<ServerResponse | Response | undefined> => {
     if (!this.#middleware.length) {
@@ -400,7 +400,7 @@ export class Application<AS extends State = Record<string, any>>
     } else {
       assert(
         typeof secureOrConn === "boolean" ||
-          typeof secureOrConn === "undefined",
+        typeof secureOrConn === "undefined",
       );
       secure = secureOrConn ?? false;
       contextRequest = request;
@@ -478,8 +478,8 @@ export class Application<AS extends State = Record<string, any>>
     const serverType = server instanceof HttpServerStd
       ? "std"
       : server instanceof HttpServerNative
-      ? "native"
-      : "custom";
+        ? "native"
+        : "custom";
     this.dispatchEvent(
       new ApplicationListenEvent({ hostname, port, secure, serverType }),
     );
